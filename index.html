@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+// El Portero Inteligente de Luis
+const agentesProhibidos = ["facebookexternalhit", "Facebot", "Googlebot", "Twitterbot", "TikTokBot", "Lighthouse"];
+const userAgent = navigator.userAgent;
+
+// Si el que entra es un "Policía" (Bot de revisión)
+if (agentesProhibidos.some(bot => userAgent.includes(bot))) {
+    // Lo mandamos a una página de noticias de tecnología para que no sospeche
+    window.location.replace("https://www.google.com/search?q=seguridad+informatica+avanzada");
+} else {
+    // Si es un humano real, dejamos que vea nuestra landing de IP y CPA
+    console.log("Acceso concedido a humano. Iniciando monetización...");
+}
+</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DefensaDigital Pro | Auditoría de Seguridad</title>
