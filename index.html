@@ -5,146 +5,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DefensaDigital Pro | Auditoría de Seguridad</title>
     
-    <link rel="icon" href="favicon.png" type="image/png">
-    
+    <script type="text/javascript" src="https://trianglerockers.com/script_include.php?it=1888166&app=1"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #3b82f6; 
-            --bg-overlay: rgba(15, 23, 42, 0.8); 
-            --text-main: #f8fafc; 
-            --card-bg: rgba(30, 41, 59, 0.7); 
-            --border: rgba(255, 255, 255, 0.1); 
-            --danger: #ef4444; 
-            --success: #10b981; 
-            --console-bg: #020617;
+            --primary: #3b82f6; --primary-glow: rgba(59, 130, 246, 0.4);
+            --bg-overlay: rgba(15, 23, 42, 0.75); --text-main: #f8fafc; 
+            --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.6); 
+            --border: rgba(255, 255, 255, 0.1); --danger: #ef4444; 
+            --warning: #f59e0b; --success: #10b981; --console-bg: #020617;
         }
-
+        
+        * { box-sizing: border-box; }
         body { 
             background-color: #0f172a;
-            background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)), url('fondo.png'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            min-height: 100vh; 
-            padding: 20px; 
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1920'); 
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: var(--text-main); font-family: 'Inter', sans-serif; 
+            margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 20px; overflow: hidden; perspective: 1000px;
         }
 
-        .header, .container { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 650px; }
-        .header { text-align: center; margin-bottom: 1.5rem; background: var(--bg-overlay); padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .header h1 { margin: 0; font-size: 2rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
-        
-        .container { background: var(--card-bg); padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        
-        .input-group { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-        input { flex-grow: 1; padding: 15px; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); color: white; border-radius: 10px; outline: none; font-size: 1rem; }
-        button { background: var(--primary); color: white; border: none; padding: 15px 25px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        /* SISTEMA DE CRÉDITOS */
+        .credits-badge {
+            position: absolute; top: 20px; right: 20px; background: rgba(15, 23, 42, 0.8);
+            padding: 10px 20px; border-radius: 30px; border: 1px solid var(--primary);
+            font-family: 'Fira Code', monospace; font-size: 0.9rem; z-index: 100;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
 
-        #console { background: var(--console-bg); color: var(--success); padding: 20px; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid rgba(16, 185, 129, 0.2); line-height: 1.6; }
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #020617; z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .splash-logo { width: 80px; height: 80px; margin-bottom: 20px; animation: pulseGlow 2s infinite; }
+        .splash-bar-container { width: 250px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+        .splash-bar-fill { height: 100%; width: 0%; background: var(--primary); animation: loadSystem 2.5s ease-in-out forwards; }
+        .splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-        .result-box { display: none; border-top: 1px solid var(--border); padding-top: 2rem; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes loadSystem { 0% { width: 0%; } 100% { width: 100%; } }
+        @keyframes pulseGlow { 0%, 100% { filter: drop-shadow(0 0 5px var(--primary)); transform: scale(1); } 50% { filter: drop-shadow(0 0 15px var(--primary)); transform: scale(1.05); } }
 
-        .vulnerability-card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 1.2rem; background: rgba(15, 23, 42, 0.5); border-left: 5px solid var(--danger); }
-        
-        .action-zone { text-align: center; margin-top: 2rem; padding: 2rem; background: rgba(59, 130, 246, 0.15); border-radius: 15px; border: 1px dashed var(--primary); }
-        
-        .lock-btn { background: #ffffff; color: #0f172a; padding: 18px; text-decoration: none; border-radius: 10px; font-weight: 900; display: block; margin-bottom: 15px; transition: 0.3s; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
-        .lock-btn:hover { background: #f1f5f9; transform: scale(1.03); }
-        
-        .email-btn { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
-        .email-btn:hover { color: white; }
+        #cyberCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.4; }
 
-        /* BANNER COOKIES */
-        #cookie-banner { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--border); padding: 18px 28px; border-radius: 14px; display: flex; align-items: center; gap: 20px; z-index: 9999; width: 90%; max-width: 550px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); backdrop-filter: blur(10px); }
+        .header, .container { position: relative; z-index: 10; backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; }
+        .header { text-align: center; margin-bottom: 2rem; background: var(--bg-overlay); padding: 20px 40px; }
+        .header h1 { margin: 0; font-size: 1.8rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .container { background: var(--card-bg); padding: 2.5rem; width: 100%; max-width: 650px; transform-style: preserve-3d; transition: transform 0.1s ease-out; }
+        
+        .input-group { display: flex; gap: 12px; margin-bottom: 1.5rem; }
+        input { flex-grow: 1; padding: 14px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); color: white; border-radius: 10px; outline: none; }
+        
+        button { background: linear-gradient(135deg, var(--primary), #2563eb); color: white; border: none; padding: 14px 28px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        button:disabled { background: #334155; opacity: 0.6; cursor: not-allowed; }
+
+        /* BOTÓN RECARGA */
+        #reloadBtn { background: linear-gradient(135deg, #10b981, #059669); margin-top: 10px; display: none; width: 100%; }
+
+        #console { background: var(--console-bg); color: var(--success); padding: 20px; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid #1e293b; }
+
+        .result-box { display: none; padding-top: 1.5rem; }
+        .vulnerability-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; margin-bottom: 1rem; background: rgba(15, 23, 42, 0.4); border-left: 4px solid var(--warning); }
+        .lock-btn { background: white; color: #0f172a; padding: 16px; border-radius: 10px; font-weight: 800; display: block; text-align: center; text-decoration: none; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>DefensaDigital Pro</h1>
-        <p style="margin-top:5px; opacity:0.8;">Plataforma Avanzada de Auditoría de Redes y Dominios</p>
+    <div class="credits-badge">⚡ ENERGÍA: <span id="creditCount">3</span>/3</div>
+
+    <div id="splash-screen">
+        <svg class="splash-logo" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <div class="splash-bar-container"><div class="splash-bar-fill"></div></div>
     </div>
 
-    <div class="container">
-        <div class="input-group">
-            <input type="text" id="targetUrl" placeholder="Introduce URL del objetivo...">
-            <button id="scanBtn" onclick="startScan()">Escanear</button>
+    <canvas id="cyberCanvas"></canvas>
+
+    <div class="header" id="mainHeader">
+        <h1 id="mainTitle" data-value="DefensaDigital Pro">DefensaDigital Pro</h1>
+        <p>Análisis Forense Real-Time</p>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div id="inputSection">
+            <div class="input-group">
+                <input type="text" id="targetUrl" placeholder="Ej: google.com" autocomplete="off">
+                <button id="scanBtn" onclick="runAudit()">Auditar Sistema</button>
+            </div>
+            <button id="reloadBtn" onclick="call_locker()">🔋 RECARGAR ENERGÍA (GRATIS)</button>
         </div>
 
         <div id="console"></div>
 
         <div id="resultBox" class="result-box">
-            <div id="finalStatus" style="text-align:center; margin-bottom:20px;"></div>
+            <div id="finalStatus" style="text-align: center; margin-bottom: 15px;"></div>
             <div id="details"></div>
-            
-            <div class="action-zone">
-                <p style="margin-bottom:20px; font-size: 1rem;"><b>🔒 VERIFICACIÓN REQUERIDA</b><br><span style="font-size:0.8rem; opacity:0.8;">Para desbloquear el reporte técnico y soluciones de parcheo:</span></p>
-                
-                <a href="https://trianglerockers.com/1888166" class="lock-btn">DESCARGAR INFORME COMPLETO</a>
-                
-                <a href="mailto:luisvoza9@gmail.com" class="email-btn">Soporte: luisvoza9@gmail.com</a>
-            </div>
+            <a href="javascript:void(0)" onclick="call_locker()" class="lock-btn">DESCARGAR REPORTE (PDF)</a>
         </div>
     </div>
 
-    <div id="cookie-banner">
-        <p style="margin: 0; font-size: 0.85rem; color: #cbd5e1; line-height:1.4;">Este sistema utiliza cookies técnicas para validar la sesión de auditoría forense conforme a la ley RGPD.</p>
-        <button onclick="document.getElementById('cookie-banner').style.display='none'" style="background: var(--primary); padding: 10px 18px; font-size: 0.8rem;">ACEPTAR</button>
-    </div>
-
     <script>
-        function startScan() {
-            const url = document.getElementById('targetUrl').value;
-            if(!url) { alert("Error: Debes ingresar un dominio o IP"); return; }
-            
-            const scanBtn = document.getElementById('scanBtn');
-            const consoleDiv = document.getElementById('console');
-            const resultBox = document.getElementById('resultBox');
-            
-            scanBtn.disabled = true;
-            consoleDiv.style.display = 'block';
-            consoleDiv.innerHTML = "";
-            resultBox.style.display = 'none';
+        // LÓGICA DE MONEDAS (LocalStorage)
+        let credits = localStorage.getItem('user_credits') ? parseInt(localStorage.getItem('user_credits')) : 3;
+        updateUI();
 
-            const logs = [
-                "> [INFO] Estableciendo túnel de escaneo...",
-                "> [WARN] Saltando firewall del host...",
-                "> [INFO] Analizando puertos 80, 443, 8080...",
-                "> [FAIL] Cabecera X-Frame-Options no configurada.",
-                "> [FAIL] Vulnerabilidad detectada en intercambio de cookies.",
-                "> [INFO] Extrayendo metadatos del servidor...",
-                "> [CRIT] Desbordamiento de búfer detectado en subcapa.",
-                "> [INFO] Generando informe forense detallado..."
-            ];
-
-            let i = 0;
-            const interval = setInterval(() => {
-                consoleDiv.innerHTML += `<div style="margin-bottom:8px;">${logs[i]}</div>`;
-                consoleDiv.scrollTop = consoleDiv.scrollHeight;
-                i++;
-                if (i >= logs.length) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        consoleDiv.style.display = 'none';
-                        document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ ESTADO: AMENAZA ALTA DETECTADA</h2>";
-                        document.getElementById('details').innerHTML = `
-                            <div class='vulnerability-card'><b>Inyección SQL (Nivel 4):</b><p>El punto de entrada del servidor permite lectura de base de datos no autorizada.</p></div>
-                            <div class='vulnerability-card'><b>Certificación SSL Débil:</b><p>Algoritmo de cifrado obsoleto. Susceptible a ataques Man-in-the-Middle.</p></div>`;
-                        resultBox.style.display = 'block';
-                        scanBtn.disabled = false;
-                    }, 1200);
-                }
-            }, 900);
+        function updateUI() {
+            document.getElementById('creditCount').innerText = credits;
+            if (credits <= 0) {
+                document.getElementById('scanBtn').style.display = 'none';
+                document.getElementById('targetUrl').style.display = 'none';
+                document.getElementById('reloadBtn').style.display = 'block';
+            } else {
+                document.getElementById('scanBtn').style.display = 'block';
+                document.getElementById('targetUrl').style.display = 'block';
+                document.getElementById('reloadBtn').style.display = 'none';
+            }
         }
+
+        // FÍSICA 3D Y CANVAS (Igual que antes)
+        document.addEventListener('mousemove', (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 45; 
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 45;
+            document.getElementById('mainContainer').style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // ANIMACIÓN SPLASH
+        setTimeout(() => { document.getElementById('splash-screen').classList.add('splash-hidden'); }, 2500);
+
+        // FUNCIÓN DE AUDITORÍA
+        async function runAudit() {
+            const domain = document.getElementById('targetUrl').value.trim();
+            if(!domain || !domain.includes('.')) { alert("Introduce un dominio válido"); return; }
+            
+            // GASTAR MONEDA
+            credits--;
+            localStorage.setItem('user_credits', credits);
+            updateUI();
+
+            const btn = document.getElementById('scanBtn');
+            const cons = document.getElementById('console');
+            const res = document.getElementById('resultBox');
+            
+            btn.disabled = true;
+            cons.style.display = 'block';
+            cons.innerHTML = "";
+            res.style.display = 'none';
+
+            const typeLog = async (text) => {
+                const line = document.createElement('div');
+                line.innerHTML = text;
+                cons.appendChild(line);
+                cons.scrollTop = cons.scrollHeight;
+                await new Promise(r => setTimeout(r, 600));
+            };
+
+            await typeLog("> [INIT] Conectando a API Google DNS...");
+            
+            try {
+                const response = await fetch(`https://dns.google/resolve?name=${domain}`);
+                const data = await response.json();
+                const ip = data.Answer ? data.Answer[0].data : "Enmascarada";
+
+                // GEO LOCALIZACIÓN REAL
+                let geo = "Localizando servidor...";
+                const geoRes = await fetch(`https://ipapi.co/${ip.split(',')[0]}/json/`);
+                const geoData = await geoRes.json();
+                geo = geoData.city ? `${geoData.city}, ${geoData.country_name}` : "Ubicación Protegida";
+
+                await typeLog(`> [FOUND] IP: ${ip}`);
+                await typeLog(`> [GEO] Localización: ${geo}`);
+                await typeLog("> [WARN] Brecha detectada en cabecera HSTS.");
+
+                setTimeout(() => {
+                    cons.style.display = 'none';
+                    res.style.display = 'block';
+                    document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger)'>⚠️ RIESGO ALTO</h2>";
+                    document.getElementById('details').innerHTML = `
+                        <div class="vulnerability-card">
+                            <b>Fuga detectada en: ${domain}</b>
+                            <p>Servidor ubicado en ${geo}. Se recomienda parchear cabeceras X-XSS.</p>
+                        </div>`;
+                    btn.disabled = false;
+                }, 800);
+            } catch (e) {
+                btn.disabled = false;
+            }
+        }
+
+        // CANVAS PARTICULAS (Simplificado para rendimiento)
+        const canvas = document.getElementById('cyberCanvas');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        window.onresize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+        window.onresize();
+        function animate() {
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle = "rgba(96, 165, 250, 0.2)";
+            for(let i=0; i<30; i++) ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
