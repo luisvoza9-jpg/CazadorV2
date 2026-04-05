@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DefensaDigital Pro | Auditoría de Seguridad</title>
     
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'%3E%3C/path%3E%3Cpath d='M12 8v4'%3E%3C/path%3E%3Cpath d='M12 16h.01'%3E%3C/path%3E%3C/svg%3E">
-
-    <script type="text/javascript" src="https://trianglerockers.com/script_include.php?it=1888166&app=1"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'%3E%3C/path%3E%3Cpath d='M12 8v4'%3E%3C/path%3E%3Cpath d='M12 16h.01'%3E%3C/path%3E%3C//svg%3E">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -28,7 +26,7 @@
             color: var(--text-main); font-family: 'Inter', sans-serif; 
             margin: 0; display: flex; flex-direction: column; align-items: center; 
             min-height: 100vh; padding: 40px 20px;
-            overflow-y: auto; /* Permite bajar si el contenido es largo */
+            overflow-y: auto; 
             perspective: 1000px;
         }
 
@@ -39,15 +37,15 @@
             box-shadow: 0 0 15px var(--primary-glow); backdrop-filter: blur(5px);
         }
 
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #020617; z-index: 9999; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-        .splash-logo { width: 80px; height: 80px; margin-bottom: 20px; animation: pulseGlow 2s infinite; }
-        .splash-bar-container { width: 250px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
-        .splash-bar-fill { height: 100%; width: 0%; background: var(--primary); animation: loadSystem 2.5s ease-in-out forwards; }
+        /* Splash Screen y Efecto Escudos */
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020617; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s; }
+        #splashCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .splash-logo { width: 80px; height: 80px; margin-bottom: 20px; opacity: 0; transition: opacity 0.3s ease; filter: drop-shadow(0 0 5px var(--primary)); }
+        .splash-static-show { opacity: 1 !important; animation: pulseGlow 2s infinite; }
+        .splash-bar-container { width: 250px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; opacity: 0; transition: opacity 0.3s ease;}
+        .splash-bar-fill { height: 100%; width: 0%; background: var(--primary); }
+        .show-bar { opacity: 1 !important; }
+        .fill-bar { animation: loadSystem 1s ease-out forwards; }
         .splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         @keyframes loadSystem { 0% { width: 0%; } 100% { width: 100%; } }
@@ -55,29 +53,46 @@
 
         #cyberCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.3; }
 
+        /* Contenedores */
         .header { position: relative; z-index: 10; text-align: center; margin-bottom: 2rem; background: var(--bg-overlay); padding: 20px 40px; border-radius: 16px; border: 1px solid var(--border); backdrop-filter: blur(10px); width: 100%; max-width: 650px;}
         .header h1 { margin: 0; font-size: 1.8rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
 
         .container { position: relative; z-index: 10; background: var(--card-bg); padding: 2.5rem; width: 100%; max-width: 650px; border-radius: 16px; border: 1px solid var(--border); backdrop-filter: blur(16px); transform-style: preserve-3d; transition: transform 0.1s ease-out; margin-bottom: 50px; }
         
-        .input-group { display: flex; gap: 12px; margin-bottom: 1.5rem; }
+        .input-group { display: flex; gap: 12px; margin-bottom: 0.8rem; transform: translateZ(20px); }
         input { flex-grow: 1; padding: 14px; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); color: white; border-radius: 10px; outline: none; font-size: 1rem; }
         input:focus { border-color: var(--primary); }
         
         button { background: linear-gradient(135deg, var(--primary), #2563eb); color: white; border: none; padding: 14px 28px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: 0.3s; }
         button:disabled { background: #334155; opacity: 0.6; cursor: not-allowed; }
 
+        /* Estilo para el nuevo botón secundario de escanear sistema */
+        .secondary-btn { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid #3b82f6; width: 100%; padding: 12px; font-size: 0.9rem; margin-bottom: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .secondary-btn:hover { background: rgba(59, 130, 246, 0.2); }
+
         #reloadBtn { background: linear-gradient(135deg, #10b981, #059669); margin-top: 10px; display: none; width: 100%; }
 
-        #console { background: var(--console-bg); color: var(--success); padding: 20px; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.6; height: 180px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid #1e293b; }
+        /* Terminal Hacker */
+        #console { background: var(--console-bg); color: var(--success); padding: 20px; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.6; height: 180px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid #1e293b; position: relative; }
         .blinking-cursor { display: inline-block; width: 8px; height: 15px; background-color: var(--success); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 5px; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
         .log-prefix { color: #38bdf8; font-weight: bold; } .log-warn { color: var(--warning); } .log-hex { color: #64748b; font-size: 0.75rem; margin-right: 8px; }
 
-        .result-box { display: none; padding-top: 1.5rem; }
+        /* Resultados */
+        .result-box { display: none; padding-top: 1.5rem; transform: translateZ(30px); }
         .vulnerability-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; margin-bottom: 1rem; background: rgba(15, 23, 42, 0.4); border-left: 4px solid var(--warning); }
-        .lock-btn { background: #ffffff; color: #0f172a; padding: 16px; border-radius: 10px; font-weight: 900; display: block; text-align: center; text-decoration: none; margin-top: 25px; box-shadow: 0 4px 15px rgba(255,255,255,0.1); }
+        .lock-btn { background: linear-gradient(135deg, #ffffff, #f1f5f9); color: #0f172a; padding: 16px; border-radius: 10px; font-weight: 900; display: block; text-align: center; text-decoration: none; margin-top: 25px; box-shadow: 0 4px 15px rgba(255,255,255,0.1); transition: transform 0.2s; cursor: pointer; }
+        .lock-btn:hover { transform: translateY(-2px); }
+
+        /* ESTILOS PROFESIONALES PARA IMPRIMIR/PDF */
+        @media print {
+            body { background: white !important; color: black !important; padding: 0; margin: 0; }
+            #splash-screen, #cyberCanvas, .input-group, .secondary-btn, #reloadBtn, .lock-btn, .credits-badge { display: none !important; }
+            .container, .header { background: white !important; border: none !important; box-shadow: none !important; color: black !important; filter: none !important; }
+            .header h1 { background: none; color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+            .vulnerability-card { background: #fff5f5 !important; border: 1px solid #ffcccc !important; border-left: 5px solid #ef4444 !important; color: #000 !important; }
+            * { text-shadow: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -85,10 +100,11 @@
     <div class="credits-badge">⚡ ENERGÍA: <span id="creditCount">3</span>/3</div>
 
     <div id="splash-screen">
-        <svg class="splash-logo" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5">
+        <canvas id="splashCanvas"></canvas>
+        <svg class="splash-logo" id="splashMainLogo" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
         </svg>
-        <div class="splash-bar-container"><div class="splash-bar-fill"></div></div>
+        <div class="splash-bar-container" id="splashBar"><div class="splash-bar-fill" id="splashFill"></div></div>
     </div>
 
     <canvas id="cyberCanvas"></canvas>
@@ -102,9 +118,14 @@
         <div id="inputSection">
             <div class="input-group">
                 <input type="text" id="targetUrl" placeholder="Ej: dominio.com" autocomplete="off">
-                <button id="scanBtn" onclick="runAudit()">Auditar</button>
+                <button id="scanBtn" onclick="runAudit()">Auditar Red</button>
             </div>
-            <button id="reloadBtn" onclick="call_locker()">🔋 RECARGAR ENERGÍA (GRATIS)</button>
+            <button id="sysScanBtn" class="secondary-btn" onclick="scanSystem()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Analizar Mi Sistema Local
+            </button>
+            
+            <button id="reloadBtn" onclick="gamifiedRecharge()">🔋 RECARGAR ENERGÍA (VERIFICAR)</button>
         </div>
 
         <div id="console"></div>
@@ -112,11 +133,12 @@
         <div id="resultBox" class="result-box">
             <div id="finalStatus" style="text-align: center; margin-bottom: 15px;"></div>
             <div id="details"></div>
-            <a href="javascript:void(0)" onclick="call_locker()" class="lock-btn">📄 DESCARGAR REPORTE TÉCNICO</a>
+            <a onclick="window.print()" class="lock-btn">📄 DESCARGAR REPORTE (PDF GRATIS)</a>
         </div>
     </div>
 
     <script>
+        // === SISTEMA DE MONEDAS ===
         let credits = localStorage.getItem('user_credits') ? parseInt(localStorage.getItem('user_credits')) : 3;
         let is3DActive = false;
         updateUI();
@@ -126,100 +148,257 @@
             if (credits <= 0) {
                 document.getElementById('scanBtn').style.display = 'none';
                 document.getElementById('targetUrl').style.display = 'none';
+                document.getElementById('sysScanBtn').style.display = 'none'; // Oculta el nuevo botón al quedarse a cero
                 document.getElementById('reloadBtn').style.display = 'block';
+                document.getElementById('resultBox').style.display = 'none';
             } else {
                 document.getElementById('scanBtn').style.display = 'block';
                 document.getElementById('targetUrl').style.display = 'block';
+                document.getElementById('sysScanBtn').style.display = 'flex'; // Muestra el nuevo botón
                 document.getElementById('reloadBtn').style.display = 'none';
             }
         }
 
-        // FÍSICA 3D MEJORADA PARA NO CORTAR PANTALLA
+        // === SISTEMA DE RECARGA GAMIFICADO ===
+        function gamifiedRecharge() {
+            const btn = document.getElementById('reloadBtn');
+            window.open('https://trianglerockers.com/1888166', '_blank');
+            
+            btn.innerText = "⏳ VERIFICANDO CONEXIÓN SEGURA...";
+            btn.style.background = "linear-gradient(135deg, #f59e0b, #d97706)";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                credits = 3;
+                localStorage.setItem('user_credits', credits);
+                updateUI();
+                
+                btn.innerText = "🔋 RECARGAR ENERGÍA (VERIFICAR)";
+                btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                btn.disabled = false;
+                
+                alert("⚡ ¡Sistema verificado! Energía restaurada al máximo nivel.");
+            }, 8000);
+        }
+
+        // === FÍSICA 3D ===
         document.addEventListener('mousemove', (e) => {
             if(!is3DActive) return;
             let xAxis = (window.innerWidth / 2 - e.pageX) / 50; 
             let yAxis = (window.innerHeight / 2 - e.pageY) / 50;
             document.getElementById('mainContainer').style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
+        document.addEventListener('mouseleave', () => {
+            if(is3DActive) document.getElementById('mainContainer').style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
 
-        setTimeout(() => {
-            document.getElementById('splash-screen').classList.add('splash-hidden');
-            setTimeout(() => { is3DActive = true; }, 300); 
-        }, 2500);
+        // === INTRO DE ESCUDOS PROFESIONAL ===
+        function runSplashIntro() {
+            const canvas = document.getElementById('splashCanvas');
+            const ctx = canvas.getContext('2d');
+            const mainLogo = document.getElementById('splashMainLogo');
+            const splashBar = document.getElementById('splashBar');
+            const splashFill = document.getElementById('splashFill');
+            let mW, mH;
+            
+            function resize() { mW = canvas.width = window.innerWidth; mH = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize); resize();
 
+            function drawShieldPath(ctx, x, y, size) {
+                ctx.moveTo(x, y - size);
+                ctx.quadraticCurveTo(x + size * 0.9, y - size * 0.9, x + size, y + size * 0.2);
+                ctx.quadraticCurveTo(x + size * 0.8, y + size * 0.8, x, y + size);
+                ctx.quadraticCurveTo(x - size * 0.8, y + size * 0.8, x - size, y + size * 0.2);
+                ctx.quadraticCurveTo(x - size * 0.9, y - size * 0.9, x, y - size);
+            }
+
+            class CoreParticle {
+                constructor() {
+                    this.x = Math.random() * mW; this.y = Math.random() * mH;
+                    this.targetX = mW / 2; this.targetY = mH / 2;
+                    this.size = Math.random() * 6 + 4;
+                    this.color = Math.random() > 0.5 ? '#3b82f6' : '#a78bfa';
+                    this.opacity = 0; this.converge = false;
+                    this.speed = Math.random() * 0.015 + 0.005;
+                    this.flickerSpeed = Math.random() * 0.1;
+                    this.time = Math.random() * 100;
+                }
+                update() {
+                    this.time += this.flickerSpeed;
+                    if(!this.converge) this.opacity = Math.sin(this.time) * 0.5 + 0.5;
+                    if(this.converge) {
+                        this.x += (this.targetX - this.x) * (this.speed * 2); 
+                        this.y += (this.targetY - this.y) * (this.speed * 2);
+                        this.opacity = 0.8; this.size *= 0.985;
+                    }
+                }
+                draw() {
+                    if(this.size < 0.1 || this.opacity < 0.01) return;
+                    ctx.save(); ctx.globalAlpha = this.opacity; ctx.strokeStyle = this.color;
+                    ctx.lineWidth = 1; ctx.beginPath(); drawShieldPath(ctx, this.x, this.y, this.size);
+                    ctx.stroke(); ctx.globalAlpha = this.opacity * 0.3; ctx.fillStyle = this.color;
+                    ctx.fill(); ctx.restore();
+                }
+            }
+
+            let particles = [];
+            for(let i = 0; i < 150; i++) particles.push(new CoreParticle());
+
+            function animateMerge() {
+                ctx.clearRect(0,0,mW,mH);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animateMerge);
+            }
+            animateMerge();
+
+            setTimeout(() => { particles.forEach(p => p.converge = true); }, 1500);
+            setTimeout(() => {
+                particles = []; ctx.clearRect(0,0,mW,mH);
+                mainLogo.classList.add('splash-static-show');
+                splashBar.classList.add('show-bar'); splashFill.classList.add('fill-bar');
+            }, 2700);
+
+            setTimeout(() => {
+                document.getElementById('splash-screen').classList.add('splash-hidden');
+                setTimeout(() => { is3DActive = true; document.getElementById('targetUrl').focus(); }, 300); 
+            }, 4200);
+        }
+        document.addEventListener("DOMContentLoaded", runSplashIntro);
+
+        // === UTILIDADES DE TERMINAL ===
         function getHex() { return '[0x' + Math.floor(Math.random()*16777215).toString(16).toUpperCase().padStart(4, '0') + '] '; }
+        
+        async function typeLog(text, cons, speed = 15) {
+            const cursor = cons.querySelector('.blinking-cursor');
+            const line = document.createElement('div');
+            cons.insertBefore(line, cursor);
+            for(let char of text) {
+                line.innerHTML += char;
+                cons.scrollTo({ top: cons.scrollHeight, behavior: 'smooth' });
+                await new Promise(r => setTimeout(r, speed));
+            }
+            await new Promise(r => setTimeout(r, 300));
+        }
 
+        function lockUI(cons, res) {
+            document.getElementById('scanBtn').disabled = true;
+            document.getElementById('sysScanBtn').disabled = true;
+            cons.style.display = 'block';
+            cons.innerHTML = "<span class='blinking-cursor'></span>";
+            res.style.display = 'none';
+        }
+
+        function unlockUI() {
+            document.getElementById('scanBtn').disabled = false;
+            document.getElementById('sysScanBtn').disabled = false;
+        }
+
+        // === 1. AUDITORÍA DE DOMINIO ===
         async function runAudit() {
             const domain = document.getElementById('targetUrl').value.trim();
             if(!domain || !domain.includes('.')) { alert("Introduce un dominio válido"); return; }
             
-            credits--;
-            localStorage.setItem('user_credits', credits);
-            updateUI();
-
+            credits--; localStorage.setItem('user_credits', credits); updateUI();
             const cons = document.getElementById('console');
             const res = document.getElementById('resultBox');
-            document.getElementById('scanBtn').disabled = true;
-            
-            cons.style.display = 'block';
-            cons.innerHTML = "<span class='blinking-cursor'></span>";
-            res.style.display = 'none';
+            lockUI(cons, res);
 
-            const typeLog = async (text) => {
-                const cursor = cons.querySelector('.blinking-cursor');
-                const line = document.createElement('div');
-                cons.insertBefore(line, cursor);
-                line.innerHTML = text;
-                cons.scrollTop = cons.scrollHeight;
-                await new Promise(r => setTimeout(r, 600));
-            };
-
-            await typeLog(`<span class="log-hex">${getHex()}</span> > Iniciando conexión DNS...`);
+            await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[INIT]</span> Iniciando conexión DNS a ${domain}...`, cons);
             
             try {
                 const response = await fetch(`https://dns.google/resolve?name=${domain}`);
                 const data = await response.json();
-                const ip = data.Answer ? data.Answer[0].data : "Protegida";
-                await typeLog(`<span class="log-hex">${getHex()}</span> > IPv4 Detectada: <span style="color:#fff">${ip}</span>`);
+                const ip = data.Answer ? data.Answer[0].data : "IP Enmascarada";
+                await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[DNS]</span> IPv4 Detectada: <span style="color:#fff">${ip}</span>`, cons);
 
-                let geoData = { city: "Desconocida", country_name: "Desconocido" };
+                let geoData = { city: "Desconocida", country_name: "Protegido" };
                 try {
                     const geoRes = await fetch(`https://ipapi.co/${ip.split(',')[0]}/json/`);
-                    geoData = await geoRes.json();
+                    if(geoRes.ok) geoData = await geoRes.json();
                 } catch(e) {}
 
-                await typeLog(`<span class="log-hex">${getHex()}</span> > Localización: ${geoData.city || 'Cloud'}, ${geoData.country_name || 'Global'}`);
-                await typeLog(`<span class="log-hex">${getHex()}</span> > [WARN] Vulnerabilidad SSL detectada.`);
+                await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[GEO]</span> Localización: ${geoData.city || 'Cloud'}, ${geoData.country_name || 'Global'}`, cons);
+                await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix log-warn">[WARN]</span> Vulnerabilidad en cabeceras detectada.`, cons);
 
                 setTimeout(() => {
-                    cons.style.display = 'none';
-                    res.style.display = 'block';
+                    cons.style.display = 'none'; res.style.display = 'block';
+                    let dateStr = new Date().toLocaleString('es-ES');
                     document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ RIESGO DETECTADO</h2>";
                     document.getElementById('details').innerHTML = `
                         <div class="vulnerability-card" style="border-left-color:var(--danger)">
-                            <b>Fuga de información en: ${domain}</b>
-                            <p>IP: ${ip} | Host: ${geoData.city || 'Nodo Externo'}</p>
-                            <p style="font-size:0.8rem; opacity:0.7;">El servidor expone cabeceras sensibles. Riesgo de secuestro de datos medio-alto.</p>
+                            <b>🔍 REPORTE DE AUDITORÍA FORENSE</b><br><br>
+                            <b>Objetivo:</b> ${domain}<br>
+                            <b>Fecha del escaneo:</b> ${dateStr}<br>
+                            <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+                            <b>Dirección IP:</b> ${ip}<br>
+                            <b>Ubicación del Servidor:</b> ${geoData.city || 'Nodo Externo'}, ${geoData.country_name || ''}<br>
+                            <b>Nivel de Amenaza:</b> Alto<br>
+                            <p style="font-size:0.85rem; opacity:0.8; margin-top:10px;"><b>Detalles:</b> El servidor expone cabeceras sensibles. Riesgo de secuestro de datos medio-alto. Se recomienda parchear la configuración DNS y ocultar la procedencia de la IP mediante un proxy inverso.</p>
                         </div>`;
-                    document.getElementById('scanBtn').disabled = false;
-                    // Scroll automático al resultado
+                    unlockUI();
                     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 }, 800);
             } catch (e) {
-                alert("Error de conexión");
-                document.getElementById('scanBtn').disabled = false;
+                cons.innerHTML += `<div style='color:var(--danger)'><span class="log-hex">${getHex()}</span> [ERROR CRÍTICO] Conexión rechazada por el host.</div>`;
+                unlockUI();
             }
         }
 
-        // FONTO PARTICULAS
+        // === 2. NUEVO: ANÁLISIS DE SISTEMA LOCAL ===
+        async function scanSystem() {
+            credits--; localStorage.setItem('user_credits', credits); updateUI();
+            const cons = document.getElementById('console');
+            const res = document.getElementById('resultBox');
+            lockUI(cons, res);
+
+            // Extraer datos reales del navegador
+            const cores = navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 'No detectado';
+            const screenRes = `${window.screen.width}x${window.screen.height}`;
+            const lang = navigator.language || 'es-ES';
+            const userAgent = navigator.userAgent;
+            
+            // Detección simple de Sistema Operativo para mostrarlo
+            let os = "Sistema Desconocido";
+            if(userAgent.indexOf("Win") !== -1) os = "Windows OS";
+            if(userAgent.indexOf("Mac") !== -1) os = "macOS / iOS";
+            if(userAgent.indexOf("Linux") !== -1) os = "Linux";
+            if(userAgent.indexOf("Android") !== -1) os = "Android OS";
+
+            await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[SYS]</span> Escaneando métricas locales...`, cons);
+            await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[HARDWARE]</span> Procesador: ${cores} núcleos | Display: ${screenRes}`, cons);
+            await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[OS]</span> Firma digital: ${os}`, cons);
+            await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix">[NET]</span> Región/Idioma expuesto: ${lang}`, cons);
+            await typeLog(`<span class="log-hex">${getHex()}</span><span class="log-prefix log-warn">[WARN]</span> Fingerprinting detectado. Rastreabilidad al 94%.`, cons);
+
+            setTimeout(() => {
+                cons.style.display = 'none'; res.style.display = 'block';
+                let dateStr = new Date().toLocaleString('es-ES');
+                document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ IDENTIDAD EXPUESTA</h2>";
+                document.getElementById('details').innerHTML = `
+                    <div class="vulnerability-card" style="border-left-color:var(--danger)">
+                        <b>🔍 REPORTE DE SISTEMA LOCAL</b><br><br>
+                        <b>Objetivo:</b> Dispositivo Local<br>
+                        <b>Fecha del escaneo:</b> ${dateStr}<br>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+                        <b>Sistema Operativo:</b> ${os}<br>
+                        <b>Hardware Detectado:</b> ${cores} Cores lógicos, Resolución ${screenRes}<br>
+                        <b>Huella Digital:</b> Región ${lang}<br>
+                        <b>Nivel de Amenaza:</b> Crítico (Rastreo Abierto)<br>
+                        <p style="font-size:0.85rem; opacity:0.8; margin-top:10px;"><b>Detalles:</b> Su navegador está filtrando métricas exactas de hardware y software (Browser Fingerprinting). Esto permite a terceros crear un perfil único de su dispositivo y rastrear su actividad de forma cruzada, incluso si utiliza Modo Incógnito o VPN. Se recomienda encarecidamente utilizar extensiones de ofuscación de Canvas y User-Agent.</p>
+                    </div>`;
+                unlockUI();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 800);
+        }
+
+        // === FONDO PARTÍCULAS ===
         const canvas = document.getElementById('cyberCanvas');
         const ctx = canvas.getContext('2d');
         let w, h;
         window.onresize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
         window.onresize();
         function animate() {
-            ctx.clearRect(0,0,w,h);
-            ctx.fillStyle = "rgba(96, 165, 250, 0.15)";
+            ctx.clearRect(0,0,w,h); ctx.fillStyle = "rgba(96, 165, 250, 0.15)";
             for(let i=0; i<40; i++) ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
             requestAnimationFrame(animate);
         }
