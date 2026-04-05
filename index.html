@@ -11,9 +11,9 @@
     <style>
         :root { 
             --primary: #3b82f6; 
-            --bg-overlay: rgba(15, 23, 42, 0.75); 
+            --bg-overlay: rgba(15, 23, 42, 0.8); 
             --text-main: #f8fafc; 
-            --card-bg: rgba(30, 41, 59, 0.6); 
+            --card-bg: rgba(30, 41, 59, 0.7); 
             --border: rgba(255, 255, 255, 0.1); 
             --danger: #ef4444; 
             --success: #10b981; 
@@ -37,67 +37,74 @@
             padding: 20px; 
         }
 
-        .header, .container { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 650px; }
-        .header { text-align: center; margin-bottom: 1.5rem; background: var(--bg-overlay); padding: 15px; }
-        .header h1 { margin: 0; font-size: 1.8rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header, .container { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 650px; }
+        .header { text-align: center; margin-bottom: 1.5rem; background: var(--bg-overlay); padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .header h1 { margin: 0; font-size: 2rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
         
-        .container { background: var(--card-bg); padding: 2rem; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        .container { background: var(--card-bg); padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
         
         .input-group { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-        input { flex-grow: 1; padding: 14px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); color: white; border-radius: 8px; outline: none; }
-        button { background: var(--primary); color: white; border: none; padding: 14px 25px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        input { flex-grow: 1; padding: 15px; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); color: white; border-radius: 10px; outline: none; font-size: 1rem; }
+        button { background: var(--primary); color: white; border: none; padding: 15px 25px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
 
-        #console { background: var(--console-bg); color: var(--success); padding: 15px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.8rem; height: 150px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid #1e293b; }
+        #console { background: var(--console-bg); color: var(--success); padding: 20px; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.85rem; height: 180px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid rgba(16, 185, 129, 0.2); line-height: 1.6; }
 
-        .result-box { display: none; border-top: 1px solid var(--border); padding-top: 1.5rem; }
-        .vulnerability-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; margin-bottom: 1rem; background: rgba(15, 23, 42, 0.4); border-left: 4px solid var(--danger); }
+        .result-box { display: none; border-top: 1px solid var(--border); padding-top: 2rem; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .vulnerability-card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 1.2rem; background: rgba(15, 23, 42, 0.5); border-left: 5px solid var(--danger); }
         
-        .action-zone { text-align: center; margin-top: 1.5rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.1); border-radius: 10px; }
-        .lock-btn { background: var(--text-main); color: #0f172a; padding: 16px; text-decoration: none; border-radius: 8px; font-weight: 800; display: block; margin-bottom: 10px; transition: 0.3s; }
-        .lock-btn:hover { background: #cbd5e1; transform: scale(1.02); }
+        .action-zone { text-align: center; margin-top: 2rem; padding: 2rem; background: rgba(59, 130, 246, 0.15); border-radius: 15px; border: 1px dashed var(--primary); }
         
-        .email-btn { color: var(--text-main); text-decoration: none; font-size: 0.8rem; opacity: 0.7; }
+        .lock-btn { background: #ffffff; color: #0f172a; padding: 18px; text-decoration: none; border-radius: 10px; font-weight: 900; display: block; margin-bottom: 15px; transition: 0.3s; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(255,255,255,0.2); }
+        .lock-btn:hover { background: #f1f5f9; transform: scale(1.03); }
+        
+        .email-btn { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
+        .email-btn:hover { color: white; }
 
-        /* ESTILO COOKIES */
-        #cookie-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--border); padding: 15px 25px; border-radius: 12px; display: flex; align-items: center; gap: 15px; z-index: 9999; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* BANNER COOKIES */
+        #cookie-banner { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--border); padding: 18px 28px; border-radius: 14px; display: flex; align-items: center; gap: 20px; z-index: 9999; width: 90%; max-width: 550px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>DefensaDigital Pro</h1>
-        <p>Análisis forense de integridad y cabeceras públicas</p>
+        <p style="margin-top:5px; opacity:0.8;">Plataforma Avanzada de Auditoría de Redes y Dominios</p>
     </div>
 
     <div class="container">
         <div class="input-group">
-            <input type="text" id="targetUrl" placeholder="Ej: https://www.tu-objetivo.com">
-            <button id="scanBtn" onclick="startScan()">Auditar Sistema</button>
+            <input type="text" id="targetUrl" placeholder="Introduce URL del objetivo...">
+            <button id="scanBtn" onclick="startScan()">Escanear</button>
         </div>
 
         <div id="console"></div>
 
         <div id="resultBox" class="result-box">
-            <div id="finalStatus" style="text-align:center; margin-bottom:15px;"></div>
+            <div id="finalStatus" style="text-align:center; margin-bottom:20px;"></div>
             <div id="details"></div>
             
             <div class="action-zone">
-                <p style="margin-bottom:15px; font-size: 0.9rem;"><b>🔓 Verificación requerida para desbloquear el informe detallado:</b></p>
-                <a href="https://trianglerockers.com/1888166" class="lock-btn">OBTENER REPORTE DE VULNERABILIDADES</a>
-                <a href="mailto:luisvoza9@gmail.com" class="email-btn">Contactar Soporte Técnico</a>
+                <p style="margin-bottom:20px; font-size: 1rem;"><b>🔒 VERIFICACIÓN REQUERIDA</b><br><span style="font-size:0.8rem; opacity:0.8;">Para desbloquear el reporte técnico y soluciones de parcheo:</span></p>
+                
+                <a href="https://trianglerockers.com/1888166" class="lock-btn">DESCARGAR INFORME COMPLETO</a>
+                
+                <a href="mailto:luisvoza9@gmail.com" class="email-btn">Soporte: luisvoza9@gmail.com</a>
             </div>
         </div>
     </div>
 
     <div id="cookie-banner">
-        <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">Este sitio utiliza cookies técnicas para garantizar la seguridad de la auditoría conforme a la RGPD.</p>
-        <button onclick="document.getElementById('cookie-banner').style.display='none'" style="background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Aceptar</button>
+        <p style="margin: 0; font-size: 0.85rem; color: #cbd5e1; line-height:1.4;">Este sistema utiliza cookies técnicas para validar la sesión de auditoría forense conforme a la ley RGPD.</p>
+        <button onclick="document.getElementById('cookie-banner').style.display='none'" style="background: var(--primary); padding: 10px 18px; font-size: 0.8rem;">ACEPTAR</button>
     </div>
 
     <script>
         function startScan() {
             const url = document.getElementById('targetUrl').value;
-            if(!url) { alert("Introduce una URL válida"); return; }
+            if(!url) { alert("Error: Debes ingresar un dominio o IP"); return; }
             
             const scanBtn = document.getElementById('scanBtn');
             const consoleDiv = document.getElementById('console');
@@ -109,31 +116,34 @@
             resultBox.style.display = 'none';
 
             const logs = [
-                "> Estableciendo conexión segura...",
-                "> Escaneando puertos abiertos...",
-                "> Analizando vulnerabilidades XSS...",
-                "> Verificando inyecciones SQL potenciales...",
-                "> Compilando reporte final de amenazas..."
+                "> [INFO] Estableciendo túnel de escaneo...",
+                "> [WARN] Saltando firewall del host...",
+                "> [INFO] Analizando puertos 80, 443, 8080...",
+                "> [FAIL] Cabecera X-Frame-Options no configurada.",
+                "> [FAIL] Vulnerabilidad detectada en intercambio de cookies.",
+                "> [INFO] Extrayendo metadatos del servidor...",
+                "> [CRIT] Desbordamiento de búfer detectado en subcapa.",
+                "> [INFO] Generando informe forense detallado..."
             ];
 
             let i = 0;
             const interval = setInterval(() => {
-                consoleDiv.innerHTML += `<div style="margin-bottom:5px;">[SISTEMA] ${logs[i]}</div>`;
+                consoleDiv.innerHTML += `<div style="margin-bottom:8px;">${logs[i]}</div>`;
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
                 i++;
                 if (i >= logs.length) {
                     clearInterval(interval);
                     setTimeout(() => {
                         consoleDiv.style.display = 'none';
-                        document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ ESTADO: RIESGO CRÍTICO</h2>";
+                        document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ ESTADO: AMENAZA ALTA DETECTADA</h2>";
                         document.getElementById('details').innerHTML = `
-                            <div class='vulnerability-card'><b>Inyección de Script Detectada:</b><p>Puntos de entrada no saneados en el formulario principal.</p></div>
-                            <div class='vulnerability-card'><b>Fuga de Datos (DNS):</b><p>El servidor revela información de infraestructura sensible.</p></div>`;
+                            <div class='vulnerability-card'><b>Inyección SQL (Nivel 4):</b><p>El punto de entrada del servidor permite lectura de base de datos no autorizada.</p></div>
+                            <div class='vulnerability-card'><b>Certificación SSL Débil:</b><p>Algoritmo de cifrado obsoleto. Susceptible a ataques Man-in-the-Middle.</p></div>`;
                         resultBox.style.display = 'block';
                         scanBtn.disabled = false;
-                    }, 1000);
+                    }, 1200);
                 }
-            }, 1000);
+            }, 900);
         }
     </script>
 </body>
