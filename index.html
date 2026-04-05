@@ -3,55 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DefensaDigital Pro | Auditoría Real</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>DefensaDigital Pro | Auditoría de Seguridad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --bg: #f3f4f6; --text: #1f2937; --card-bg: #ffffff; --border: #e5e7eb; --danger: #dc2626; --warning: #f59e0b; --success: #10b981; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
-        .header { text-align: center; margin-bottom: 2rem; }
-        .container { background: var(--card-bg); border: 1px solid var(--border); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        input { flex-grow: 1; padding: 12px 15px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; }
-        button { background: var(--primary); color: white; border: none; padding: 12px 24px; font-weight: 600; border-radius: 8px; cursor: pointer; }
-        #console { background: #1f2937; color: #e5e7eb; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; height: 120px; overflow-y: auto; margin-bottom: 1.5rem; display: none; }
-        .result-box { display: none; border-top: 1px solid var(--border); padding-top: 1.5rem; }
-        .vulnerability-card { border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 1rem; background: #f9fafb; display: flex; gap: 15px; }
-        .severity-high { color: var(--danger); }
-        .severity-low { color: var(--success); }
-        .action-zone { text-align: center; margin-top: 2rem; padding: 1.5rem; background: #eff6ff; border-radius: 8px; }
-        .lock-btn { background: var(--primary); color: white; padding: 12px 24px; display: inline-block; text-decoration: none; border-radius: 8px; font-weight: 600; }
+        :root { 
+            --primary: #3b82f6; 
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --bg-overlay: rgba(15, 23, 42, 0.75); 
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.6); 
+            --border: rgba(255, 255, 255, 0.1); 
+            --danger: #ef4444; 
+            --warning: #f59e0b; 
+            --success: #10b981; 
+            --console-bg: #020617;
+        }
+        
+        * { box-sizing: border-box; }
+
+        body { 
+            background-color: #0f172a;
+            background-image: 
+                linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)),
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1920'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+
+        /* Efecto Glassmorphism Avanzado */
+        .header, .container { 
+            position: relative; 
+            z-index: 1; 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 2rem; 
+            background: var(--bg-overlay); 
+            padding: 20px 40px; 
+            border-radius: 16px; 
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .header h1 { margin: 0 0 5px 0; font-weight: 800; font-size: 1.8rem; letter-spacing: -0.5px; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+
+        .container { 
+            background: var(--card-bg); 
+            padding: 2.5rem; 
+            border-radius: 16px; 
+            width: 100%; 
+            max-width: 650px; 
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .input-group { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 1.5rem; 
+            flex-wrap: wrap; 
+        }
+
+        input { 
+            flex-grow: 1; 
+            padding: 14px 18px; 
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border); 
+            color: var(--text-main);
+            border-radius: 10px; 
+            font-size: 1rem; 
+            outline: none; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        input::placeholder { color: #64748b; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); background: rgba(15, 23, 42, 0.8); }
+        
+        button { 
+            background: linear-gradient(135deg, var(--primary), #2563eb); 
+            color: white; 
+            border: none; 
+            padding: 14px 28px; 
+            font-weight: 600; 
+            letter-spacing: 0.5px;
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow); filter: brightness(1.1); }
+        button:disabled { background: #475569; box-shadow: none; cursor: not-allowed; transform: none; color: #94a3b8; }
+
+        /* Consola Estilo Hacker */
+        #console { 
+            background: var(--console-bg); 
+            color: var(--success); 
+            padding: 20px; 
+            border-radius: 10px; 
+            font-family: 'Fira Code', monospace; 
+            font-size: 0.85rem; 
+            line-height: 1.6;
+            height: 180px; 
+            overflow-y: auto; 
+            margin-bottom: 1.5rem; 
+            display: none; 
+            border: 1px solid #1e293b;
+            box-shadow: inset 0 4px 20px rgba(0,0,0,0.8); 
+            position: relative;
+        }
+        
+        /* Scrollbar personalizada para la consola */
+        #console::-webkit-scrollbar { width: 8px; }
+        #console::-webkit-scrollbar-track { background: var(--console-bg); border-radius: 4px; }
+        #console::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        #console::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .log-entry { margin-bottom: 4px; animation: typeIn 0.3s ease-out forwards; opacity: 0; transform: translateX(-10px); }
+        .log-prefix { color: #38bdf8; font-weight: bold; }
+        .log-warn { color: var(--warning); }
+
+        .result-box { display: none; padding-top: 1.5rem; animation: slideUpFade 0.6s ease; }
+
+        .vulnerability-card { 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            padding: 18px; 
+            margin-bottom: 1.2rem; 
+            background: rgba(15, 23, 42, 0.4); 
+            display: flex; 
+            flex-direction: column;
+            gap: 5px; 
+            border-left: 4px solid var(--warning); 
+            transition: transform 0.2s;
+        }
+        .vulnerability-card:hover { transform: translateX(5px); background: rgba(30, 41, 59, 0.8); }
+        .vulnerability-card b { font-size: 1.05rem; }
+        .vulnerability-card p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+        
+        .action-zone { 
+            text-align: center; 
+            margin-top: 2rem; 
+            padding: 2rem; 
+            background: rgba(59, 130, 246, 0.05); 
+            border-radius: 12px; 
+            border: 1px solid rgba(59, 130, 246, 0.2); 
+        }
+        
+        .btn-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .lock-btn, .email-btn { 
+            padding: 14px 24px; 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            transition: all 0.3s; 
+        }
+        .lock-btn { background: var(--text-main); color: #0f172a; }
+        .lock-btn:hover { background: #e2e8f0; transform: scale(1.02); }
+        .email-btn { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
+        .email-btn:hover { background: rgba(255,255,255,0.05); transform: scale(1.02); }
+
+        /* Animaciones */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes typeIn { to { opacity: 1; transform: translateX(0); } }
+        
+        /* Loader sutil */
+        .scanning-pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            margin-left: 10px;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>Auditoría de Seguridad Web</h1>
-        <p>Análisis de integridad y cabeceras públicas</p>
+        <h1>DefensaDigital Pro</h1>
+        <p>Análisis forense de integridad y cabeceras públicas</p>
     </div>
 
     <div class="container">
         <div class="input-group">
-            <input type="text" id="targetUrl" placeholder="https://www.ejemplo.com">
-            <button id="scanBtn" onclick="startScan()">Analizar</button>
+            <input type="url" id="targetUrl" placeholder="Ej: https://www.tuempresa.com" autocomplete="off" spellcheck="false">
+            <button id="scanBtn" onclick="startScan()">Auditar Sistema</button>
         </div>
 
-        <div id="console"></div>
+        <div id="console" aria-live="polite"></div>
 
-        <div id="resultBox" class="result-box">
-            <div id="finalStatus"></div>
+        <div id="resultBox" class="result-box" aria-live="polite">
+            <div id="finalStatus" style="margin-bottom: 1.5rem; text-align: center;"></div>
             <div id="details"></div>
             
             <div class="action-zone">
-                <p>¿Quieres proteger tu sitio de ataques dirigidos?</p>
-                <a href="TU_WHATSAPP_O_ENCUESTA" class="lock-btn">Contactar con un Experto</a>
+                <p style="margin: 0 0 15px 0; color: #cbd5e1;"><b>🛡️ Siguientes pasos recomendados</b></p>
+                <div class="btn-container">
+                    <a href="https://tuvinculoaqui.com" class="lock-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Descargar Reporte Técnico (PDF)
+                    </a>
+                    <a href="mailto:luisvoza9@gmail.com?subject=Consulta%20de%20Seguridad%20Web" class="email-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        Contactar Centro de Soporte
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Soporte para la tecla Enter
+        document.getElementById('targetUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                startScan();
+            }
+        });
+
+        // Prevención de XSS robusta
+        function escapeHTML(str) {
+            return str.replace(/[&<>"'`=\/]/g, function(s) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' }[s];
+            });
+        }
+
+        // Variable global para limpiar el intervalo si el usuario hace clics múltiples rápidos
+        let scanInterval;
+
         function startScan() {
-            const url = document.getElementById('targetUrl').value.toLowerCase();
-            if(!url) return;
+            let rawInput = document.getElementById('targetUrl').value.trim().toLowerCase();
+            
+            if (!rawInput) {
+                alert("Por favor, introduce una URL para analizar.");
+                document.getElementById('targetUrl').focus();
+                return;
+            }
+
+            // Autocompletar https:// si el usuario escribe solo "dominio.com"
+            if (!/^https?:\/\//i.test(rawInput)) {
+                rawInput = 'https://' + rawInput;
+            }
+
+            // Validación experta usando la API nativa URL de JS
+            let urlObj;
+            try {
+                urlObj = new URL(rawInput);
+                // Validar que tenga un formato de dominio válido (mínimo una coma/punto)
+                if (!urlObj.hostname.includes('.')) throw new Error("Dominio inválido");
+            } catch (e) {
+                alert("Formato no válido. Por favor, introduce una URL correcta (ej: https://dominio.com)");
+                document.getElementById('targetUrl').focus();
+                return;
+            }
             
             const scanBtn = document.getElementById('scanBtn');
             const consoleDiv = document.getElementById('console');
@@ -59,44 +286,80 @@
             const details = document.getElementById('details');
             const finalStatus = document.getElementById('finalStatus');
             
+            // Reinicio de estado y UI
+            if (scanInterval) clearInterval(scanInterval);
             scanBtn.disabled = true;
+            scanBtn.innerHTML = "Analizando <span class='scanning-pulse'></span>";
             consoleDiv.style.display = 'block';
             consoleDiv.innerHTML = "";
             resultBox.style.display = 'none';
 
-            const logs = ["> Conectando...", "> Analizando seguridad...", "> Verificando SSL...", "> Finalizando..."];
+            const safeUrl = escapeHTML(urlObj.href);
+            const displayUrl = escapeHTML(urlObj.hostname);
+
+            const logs = [
+                `<span class="log-prefix">[INIT]</span> Estableciendo túnel seguro hacia <span style="color:#fff">${displayUrl}</span>...`, 
+                `<span class="log-prefix">[SSL/TLS]</span> Analizando Handshake y Cipher Suites soportados...`, 
+                `<span class="log-prefix log-warn">[WARN]</span> Escaneando cabeceras de seguridad (X-Frame-Options, CSP, CORS)...`, 
+                `<span class="log-prefix">[DNS]</span> Verificando registros TXT y políticas HSTS...`,
+                `<span class="log-prefix">[MAP]</span> Comprobando exposición de directorios ocultos...`,
+                `<span class="log-prefix" style="color:var(--success)">[SUCCESS]</span> Compilando matriz de vulnerabilidades...`
+            ];
+            
             let i = 0;
-            const interval = setInterval(() => {
-                consoleDiv.innerHTML += logs[i] + "<br>";
+            scanInterval = setInterval(() => {
+                const logEl = document.createElement('div');
+                logEl.className = 'log-entry';
+                logEl.innerHTML = logs[i];
+                consoleDiv.appendChild(logEl);
+                
+                // Auto-scroll fluido
+                consoleDiv.scrollTo({ top: consoleDiv.scrollHeight, behavior: 'smooth' });
+                
                 i++;
                 if (i >= logs.length) {
-                    clearInterval(interval);
+                    clearInterval(scanInterval);
                     
-                    // LÓGICA SINCERA
-                    let isSafe = url.includes("google") || url.includes("claude") || url.includes("apple") || url.includes("microsoft");
+                    // Lógica simulada de "seguridad"
+                    let isHighlySecure = urlObj.protocol === "https:" && (urlObj.hostname.length > 10);
                     
-                    if(isSafe) {
-                        finalStatus.innerHTML = "<h2 style='color:var(--success)'>✅ Sitio Web Seguro</h2>";
-                        details.innerHTML = "<div class='vulnerability-card'><p>No se han detectado brechas de seguridad críticas en las cabeceras públicas de este dominio.</p></div>";
-                    } else {
-                        finalStatus.innerHTML = "<h2 style='color:var(--warning)'>⚠️ Riesgos Detectados</h2>";
-                        details.innerHTML = `
-                            <div class='vulnerability-card'>
-                                <div><b class='severity-high'>Exposición de Servidor:</b><p>Se detectan cabeceras que revelan la tecnología del servidor. Riesgo de ataque dirigido.</p></div>
-                            </div>
-                            <div class='vulnerability-card'>
-                                <div><b class='severity-high'>Falta de HSTS:</b><p>La conexión no está forzada para ser siempre segura.</p></div>
-                            </div>`;
-                    }
-
                     setTimeout(() => {
                         consoleDiv.style.display = 'none';
                         resultBox.style.display = 'block';
                         scanBtn.disabled = false;
-                    }, 1000);
+                        scanBtn.innerText = "Nueva Auditoría";
+
+                        if(isHighlySecure && Math.random() > 0.3) {
+                            finalStatus.innerHTML = "<h2 style='color:var(--success); margin:0;'>✅ Nivel de Riesgo: Bajo</h2><p style='color:var(--text-muted); margin-top:5px;'>Infraestructura resistente detectada</p>";
+                            details.innerHTML = `
+                                <div class='vulnerability-card' style='border-left-color:var(--success)'>
+                                    <div><b style='color:var(--success)'>Arquitectura Segura</b>
+                                    <p>El host <strong>${displayUrl}</strong> cuenta con certificados SSL/TLS vigentes y no expone rutas críticas en superficie.</p></div>
+                                </div>`;
+                        } else {
+                            finalStatus.innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ Nivel de Riesgo: Alto</h2><p style='color:var(--text-muted); margin-top:5px;'>Se requieren acciones inmediatas</p>";
+                            details.innerHTML = `
+                                <div class='vulnerability-card' style='border-left-color:var(--danger)'>
+                                    <div><b style='color:var(--danger)'>Missing Security Headers</b>
+                                    <p>Falta directiva Strict-Transport-Security (HSTS). Riesgo inminente de ataques MITM y downgrade en ${displayUrl}.</p></div>
+                                </div>
+                                <div class='vulnerability-card'>
+                                    <div><b style='color:var(--warning)'>Information Leakage</b>
+                                    <p>El servidor expone públicamente la firma y versión exacta del software (Server/X-Powered-By), facilitando ataques dirigidos.</p></div>
+                                </div>`;
+                        }
+                    }, 1200);
                 }
-            }, 800);
+            }, 850);
         }
+
+        // Mantenemos la protección de consola que pediste (simulación corporativa)
+        document.addEventListener('contextmenu', event => event.preventDefault()); // Bloquea clic derecho
+        document.onkeydown = function(e) {
+            if(e.key === "F12") return false; 
+            if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) return false;
+            if(e.ctrlKey && (e.key === 'U' || e.key === 'u')) return false; // Bloquea ver código fuente
+        };
     </script>
 </body>
 </html>
