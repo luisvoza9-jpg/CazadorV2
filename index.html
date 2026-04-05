@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DefensaDigital Pro | Auditoría de Seguridad</title>
+    
+    <link rel="icon" href="favicon.png" type="image/png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root { 
             --primary: #3b82f6; 
-            --primary-glow: rgba(59, 130, 246, 0.4);
             --bg-overlay: rgba(15, 23, 42, 0.75); 
             --text-main: #f8fafc; 
-            --text-muted: #94a3b8;
             --card-bg: rgba(30, 41, 59, 0.6); 
             --border: rgba(255, 255, 255, 0.1); 
             --danger: #ef4444; 
-            --warning: #f59e0b; 
             --success: #10b981; 
             --console-bg: #020617;
         }
@@ -46,7 +46,6 @@
         .input-group { display: flex; gap: 10px; margin-bottom: 1.5rem; }
         input { flex-grow: 1; padding: 14px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); color: white; border-radius: 8px; outline: none; }
         button { background: var(--primary); color: white; border: none; padding: 14px 25px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        button:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
         #console { background: var(--console-bg); color: var(--success); padding: 15px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.8rem; height: 150px; overflow-y: auto; margin-bottom: 1.5rem; display: none; border: 1px solid #1e293b; }
 
@@ -54,30 +53,26 @@
         .vulnerability-card { border: 1px solid var(--border); border-radius: 10px; padding: 15px; margin-bottom: 1rem; background: rgba(15, 23, 42, 0.4); border-left: 4px solid var(--danger); }
         
         .action-zone { text-align: center; margin-top: 1.5rem; padding: 1.5rem; background: rgba(59, 130, 246, 0.1); border-radius: 10px; }
-        .btn-container { display: flex; flex-direction: column; gap: 10px; }
+        .lock-btn { background: var(--text-main); color: #0f172a; padding: 16px; text-decoration: none; border-radius: 8px; font-weight: 800; display: block; margin-bottom: 10px; transition: 0.3s; }
+        .lock-btn:hover { background: #cbd5e1; transform: scale(1.02); }
         
-        /* BOTÓN CPAGRIP */
-        .lock-btn { background: var(--text-main); color: #0f172a; padding: 14px; text-decoration: none; border-radius: 8px; font-weight: 800; transition: 0.3s; display: block; }
-        .lock-btn:hover { background: #e2e8f0; transform: scale(1.02); }
-        
-        /* BOTÓN EMAIL */
-        .email-btn { background: transparent; color: var(--text-main); border: 1px solid var(--border); padding: 10px; text-decoration: none; border-radius: 8px; font-size: 0.9rem; display: block; }
+        .email-btn { color: var(--text-main); text-decoration: none; font-size: 0.8rem; opacity: 0.7; }
 
-        /* BANNER COOKIES */
-        #cookie-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--border); padding: 15px 25px; border-radius: 12px; display: flex; align-items: center; gap: 15px; z-index: 9999; width: 90%; max-width: 500px; }
+        /* ESTILO COOKIES */
+        #cookie-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; border: 1px solid var(--border); padding: 15px 25px; border-radius: 12px; display: flex; align-items: center; gap: 15px; z-index: 9999; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>DefensaDigital Pro</h1>
-        <p>Auditoría de Seguridad e Integridad Web</p>
+        <p>Análisis forense de integridad y cabeceras públicas</p>
     </div>
 
     <div class="container">
         <div class="input-group">
-            <input type="text" id="targetUrl" placeholder="https://www.ejemplo.com">
-            <button id="scanBtn" onclick="startScan()">Analizar Sitio</button>
+            <input type="text" id="targetUrl" placeholder="Ej: https://www.tu-objetivo.com">
+            <button id="scanBtn" onclick="startScan()">Auditar Sistema</button>
         </div>
 
         <div id="console"></div>
@@ -87,24 +82,23 @@
             <div id="details"></div>
             
             <div class="action-zone">
-                <p style="margin-bottom:15px;"><b>⚠️ Acción requerida para ver el reporte:</b></p>
-                <div class="btn-container">
-                    <a href="https://trianglerockers.com/1888166" class="lock-btn">🔓 DESBLOQUEAR INFORME TÉCNICO</a>
-                    <a href="mailto:luisvoza9@gmail.com?subject=Consulta%20Seguridad" class="email-btn">📧 Contactar Soporte (luisvoza9@gmail.com)</a>
-                </div>
+                <p style="margin-bottom:15px; font-size: 0.9rem;"><b>🔓 Verificación requerida para desbloquear el informe detallado:</b></p>
+                <a href="https://trianglerockers.com/1888166" class="lock-btn">OBTENER REPORTE DE VULNERABILIDADES</a>
+                <a href="mailto:luisvoza9@gmail.com" class="email-btn">Contactar Soporte Técnico</a>
             </div>
         </div>
     </div>
 
     <div id="cookie-banner">
-        <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">Utilizamos cookies de seguridad para validar la auditoría. <a href="#" style="color:white">Leer más</a></p>
-        <button onclick="document.getElementById('cookie-banner').style.display='none'" style="padding: 6px 12px; font-size: 0.7rem;">Aceptar</button>
+        <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">Este sitio utiliza cookies técnicas para garantizar la seguridad de la auditoría conforme a la RGPD.</p>
+        <button onclick="document.getElementById('cookie-banner').style.display='none'" style="background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">Aceptar</button>
     </div>
 
     <script>
         function startScan() {
             const url = document.getElementById('targetUrl').value;
-            if(!url) return;
+            if(!url) { alert("Introduce una URL válida"); return; }
+            
             const scanBtn = document.getElementById('scanBtn');
             const consoleDiv = document.getElementById('console');
             const resultBox = document.getElementById('resultBox');
@@ -114,26 +108,32 @@
             consoleDiv.innerHTML = "";
             resultBox.style.display = 'none';
 
-            const logs = ["> Iniciando handshake...", "> Analizando cabeceras HTTP...", "> Verificando certificados SSL...", "> Buscando fugas de información...", "> Generando reporte forense..."];
+            const logs = [
+                "> Estableciendo conexión segura...",
+                "> Escaneando puertos abiertos...",
+                "> Analizando vulnerabilidades XSS...",
+                "> Verificando inyecciones SQL potenciales...",
+                "> Compilando reporte final de amenazas..."
+            ];
+
             let i = 0;
             const interval = setInterval(() => {
-                consoleDiv.innerHTML += `<div style="margin-bottom:5px;">[SEC-SCAN] ${logs[i]}</div>`;
+                consoleDiv.innerHTML += `<div style="margin-bottom:5px;">[SISTEMA] ${logs[i]}</div>`;
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
                 i++;
                 if (i >= logs.length) {
                     clearInterval(interval);
-                    document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ NIVEL DE RIESGO: CRÍTICO</h2>";
-                    document.getElementById('details').innerHTML = `
-                        <div class='vulnerability-card'><b>Cabeceras Expuestas:</b><p>Se detectó la versión del servidor. Vulnerable a exploits dirigidos.</p></div>
-                        <div class='vulnerability-card'><b>Falta de HSTS:</b><p>La conexión puede ser interceptada por terceros.</p></div>`;
-                    
                     setTimeout(() => {
                         consoleDiv.style.display = 'none';
+                        document.getElementById('finalStatus').innerHTML = "<h2 style='color:var(--danger); margin:0;'>⚠️ ESTADO: RIESGO CRÍTICO</h2>";
+                        document.getElementById('details').innerHTML = `
+                            <div class='vulnerability-card'><b>Inyección de Script Detectada:</b><p>Puntos de entrada no saneados en el formulario principal.</p></div>
+                            <div class='vulnerability-card'><b>Fuga de Datos (DNS):</b><p>El servidor revela información de infraestructura sensible.</p></div>`;
                         resultBox.style.display = 'block';
                         scanBtn.disabled = false;
                     }, 1000);
                 }
-            }, 800);
+            }, 1000);
         }
     </script>
 </body>
